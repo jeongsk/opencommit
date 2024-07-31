@@ -361,7 +361,7 @@ export type ConfigType = {
 };
 
 const defaultConfigPath = pathJoin(homedir(), '.opencommit');
-const defaultEnvPath = pathResolve(process.cwd(), '.env.locale');
+const defaultEnvPath = pathResolve(process.cwd(), '.env.local');
 
 export const getConfig = ({
   configPath = defaultConfigPath,
@@ -406,7 +406,6 @@ export const getConfig = ({
 
   const configFile = readFileSync(configPath, 'utf8');
   const config = iniParse(configFile);
-  console.log(configFromEnv);
 
   for (const configKey of Object.keys(config)) {
     if (['null', 'undefined'].includes(config[configKey])) {

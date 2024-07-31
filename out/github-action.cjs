@@ -49869,7 +49869,7 @@ var configValidators = {
   }
 };
 var defaultConfigPath = (0, import_path.join)((0, import_os.homedir)(), ".opencommit");
-var defaultEnvPath = (0, import_path.resolve)(process.cwd(), ".env.locale");
+var defaultEnvPath = (0, import_path.resolve)(process.cwd(), ".env.local");
 var getConfig = ({
   configPath = defaultConfigPath,
   envPath = defaultEnvPath
@@ -50129,12 +50129,7 @@ You will strictly follow the following conventions to generate the content of th
 
 The conventions refers to the following structure of commit message:
 ${STRUCTURE_OF_COMMIT}
- 
-${config2?.OCO_RULES && `
-
-#RULES:
-${config2.OCO_RULES}`}
-
+    
     `
 });
 var commitlintPrompts = {
@@ -60485,7 +60480,6 @@ var ADJUSTMENT_FACTOR = 20;
 var generateCommitMessageByDiff = async (diff, fullGitMojiSpec) => {
   try {
     const INIT_MESSAGES_PROMPT = await getMainCommitPrompt(fullGitMojiSpec);
-    console.log(config9, INIT_MESSAGES_PROMPT);
     const INIT_MESSAGES_PROMPT_LENGTH = INIT_MESSAGES_PROMPT.map(
       (msg) => tokenCount(msg.content) + 4
     ).reduce((a3, b3) => a3 + b3, 0);
