@@ -120,6 +120,11 @@ const INIT_MAIN_PROMPT = (
         ? 'Craft a concise commit message that encapsulates all changes made, with an emphasis on the primary updates. If the modifications share a common theme or scope, mention it succinctly; otherwise, leave the scope out to maintain focus. The goal is to provide a clear and unified overview of the changes in a one single message, without diverging into a list of commit per file change.'
         : ''
     }
+    ${
+      config?.OCO_RULES
+        ? `\n\nYou will strictly follow the following conventions to generate the content of the commit message:- \n${config.OCO_RULES}\n\n`
+        : ''
+    }
     Use the present tense. Lines must not be longer than 74 characters. Use ${language} for the commit message.`
 });
 

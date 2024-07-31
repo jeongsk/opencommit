@@ -33,7 +33,8 @@ export enum CONFIG_KEYS {
   OCO_AZURE_ENDPOINT = 'OCO_AZURE_ENDPOINT',
   OCO_TEST_MOCK_TYPE = 'OCO_TEST_MOCK_TYPE',
   OCO_API_URL = 'OCO_API_URL',
-  OCO_OLLAMA_API_URL = 'OCO_OLLAMA_API_URL'
+  OCO_OLLAMA_API_URL = 'OCO_OLLAMA_API_URL',
+  OCO_RULES = 'OCO_RULES'
 }
 
 export enum CONFIG_MODES {
@@ -360,7 +361,7 @@ export type ConfigType = {
 };
 
 const defaultConfigPath = pathJoin(homedir(), '.opencommit');
-const defaultEnvPath = pathResolve(process.cwd(), '.env');
+const defaultEnvPath = pathResolve(process.cwd(), '.env.locale');
 
 export const getConfig = ({
   configPath = defaultConfigPath,
@@ -396,7 +397,8 @@ export const getConfig = ({
     OCO_ONE_LINE_COMMIT:
       process.env.OCO_ONE_LINE_COMMIT === 'true' ? true : false,
     OCO_AZURE_ENDPOINT: process.env.OCO_AZURE_ENDPOINT || '',
-    OCO_TEST_MOCK_TYPE: process.env.OCO_TEST_MOCK_TYPE || 'commit-message'
+    OCO_TEST_MOCK_TYPE: process.env.OCO_TEST_MOCK_TYPE || 'commit-message',
+    OCO_RULES: process.env.OCO_RULES || ''
   };
 
   const configExists = existsSync(configPath);
@@ -404,6 +406,7 @@ export const getConfig = ({
 
   const configFile = readFileSync(configPath, 'utf8');
   const config = iniParse(configFile);
+  console.log(configFromEnv);
 
   for (const configKey of Object.keys(config)) {
     if (['null', 'undefined'].includes(config[configKey])) {
@@ -424,6 +427,13 @@ export const getConfig = ({
         `Manually fix the '.env' file or global '~/.opencommit' config file.`
       );
       process.exit(1);
+    }
+  }
+
+  for (const configKey of Object.keys(configFromEnv)) {
+    if (process.env[configKey] !== undefined) {
+      config[configKey] = configFromEnv[configKey];
+      continue;
     }
   }
 
